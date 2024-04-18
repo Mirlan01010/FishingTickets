@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestFishingTicket</name>
+    </assembly>
+    <members>
+        <member name="M:TestFishingTicket.Controllers.RegionController.GetAllRegion">
+            <summary>
+            Получает всех областей из БД
+            </summary>
+            <returns>Возвращает List областей</returns>
+            
+        </member>
+        <member name="M:TestFishingTicket.Controllers.RegionController.AddHouse(BLL.Models.RegionModels.RegionRequest)">
+            <summary>
+            Создает область на основе переданных данных
+            </summary>
+        </member>
+    </members>
+</doc>

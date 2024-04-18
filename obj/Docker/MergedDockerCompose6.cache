@@ -1,0 +1,71 @@
+name: dockercompose4425866850121337736
+services:
+  postgresql_db:
+    container_name: ticket-db
+    environment:
+      POSTGRES_DB: ticketdb
+      POSTGRES_PASSWORD: mirlan01010
+      POSTGRES_USER: postgres
+    image: postgres:16.2
+    networks:
+      new-network: null
+    ports:
+      - mode: ingress
+        target: 5432
+        published: "5435"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: pg-data
+        target: /var/lib/postgresql/data
+        volume: {}
+  testfishingticket:
+    build:
+      context: D:\Project\TestFishingTicket
+      dockerfile: TestFishingTicket/Dockerfile
+    depends_on:
+      postgresql_db:
+        condition: service_started
+        required: true
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_HTTPS_PORTS: "8081"
+    image: testfishingticket
+    networks:
+      new-network: null
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "80"
+        protocol: tcp
+      - mode: ingress
+        target: 8081
+        published: "443"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        protocol: tcp
+      - mode: ingress
+        target: 8081
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: C:\Users\promi\AppData\Roaming/Microsoft/UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\promi\AppData\Roaming/ASP.NET/Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+networks:
+  new-network:
+    name: dockercompose4425866850121337736_new-network
+    driver: bridge
+volumes:
+  pg-data:
+    name: dockercompose4425866850121337736_pg-data

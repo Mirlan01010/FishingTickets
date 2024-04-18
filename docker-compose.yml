@@ -1,0 +1,34 @@
+version: '3.4'
+
+networks:
+  new-network:
+    driver: bridge
+
+services:
+  testfishingticket:
+    image: ${DOCKER_REGISTRY-}testfishingticket
+    build:
+      context: .
+      dockerfile: TestFishingTicket/Dockerfile
+    ports:
+     - "80:8080"
+     - "443:8081"
+    networks:
+       - new-network
+    depends_on:
+        - postgresql_db
+  postgresql_db:
+    container_name: ticket-db
+    image: postgres:16.2
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: mirlan01010
+        POSTGRES_DB: ticketdb
+    ports:
+        - "5435:5432"
+    networks:
+        - new-network
+    volumes:
+        - pg-data:/var/lib/postgresql/data
+volumes:
+  pg-data:
